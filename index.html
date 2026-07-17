@@ -171,6 +171,29 @@
   }
   .card a:hover{ color: var(--meadow); }
 
+  /* ─── Rizzler endorsement ─── */
+  .endorse{
+    margin: 34px auto 0;
+    text-align:center;
+  }
+  .endorse img{
+    width: min(240px, 70%);
+    border: 4px solid var(--meadow);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    transform: rotate(-2.5deg);
+    transition: transform .25s;
+  }
+  .endorse img:hover{ transform: rotate(1.5deg) scale(1.04); }
+  .endorse figcaption{
+    margin-top: 12px;
+    font-size: 12px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--sky);
+    font-weight: 600;
+  }
+
   /* ─── Ballot box ─── */
   .ballot{
     margin-top: 34px;
@@ -295,6 +318,11 @@
   <p class="hint">Tap to stamp your picks (up to 3). Tap again to un-pick. Links open the listing.</p>
 
   <div id="cards"></div>
+
+  <figure class="endorse">
+    <img src="rizzler.png" alt="Trading card of The Rizzler — a bearded man delivering his most serious pout">
+    <figcaption>This ballot is Rizzler-approved</figcaption>
+  </figure>
 
   <div class="ballot">
     <h2>Drop it in the box</h2>
