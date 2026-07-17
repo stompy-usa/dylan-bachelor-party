@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dylan's Beautiful Bachelor Party Trip Extravaganza · Cast Your Votes</title>
+<!--
+  ════════════════════════════════════════════════════════════
+  SETUP (one step!):
+  1. Go to https://formspree.io → sign up free → "New Form"
+  2. Copy your form endpoint (looks like https://formspree.io/f/abcdwxyz)
+  3. Paste it below, replacing YOUR_FORM_ID
+  Every vote will appear in your Formspree dashboard + your email.
+  ════════════════════════════════════════════════════════════
+-->
+<script>
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mykrekla";
+  const MAX_PICKS = 3;
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:   #17362B;   /* deep pine green — page background */
+    --spruce: #214A3B;   /* card background */
+    --meadow: #E9E4D0;   /* poster off-white — main text */
+    --gold:   #E8B14E;   /* sunset gold — accent / selection */
+    --sky:    #8FB8C9;   /* faded sky blue — secondary text */
+    --bark:   #0F241C;   /* darkest — footer, borders */
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ transition:none !important; animation:none !important; }
+  }
+  body{
+    background: var(--pine);
+    color: var(--meadow);
+    font-family: 'Public Sans', system-ui, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── Header: park-poster style ─── */
+  header{
+    text-align:center;
+    padding: 44px 20px 28px;
+    border-bottom: 3px solid var(--gold);
+    background:
+      linear-gradient(180deg, rgba(15,36,28,.55), rgba(23,54,43,0) 70%);
+  }
+  .eyebrow{
+    font-size: 12px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--sky);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  h1{
+    font-family:'Alfa Slab One', serif;
+    font-weight: 400;
+    font-size: clamp(24px, 5.5vw, 40px);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    line-height: 1.08;
+  }
+  .dates{
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--meadow);
+  }
+  .dates strong{ color: var(--gold); }
+
+  /* ─── Token tray (signature element) ─── */
+  .tray{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bark);
+    padding: 12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(233,228,208,.15);
+  }
+  .tray-label{
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--sky);
+  }
+  .tokens{ display:flex; gap:8px; }
+  .token{
+    width: 26px; height: 26px;
+    transition: opacity .25s, transform .25s;
+  }
+  .token.spent{ opacity: .18; transform: scale(.8); }
+
+  /* ─── Cabin cards ─── */
+  main{
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 26px 16px 60px;
+  }
+  .hint{
+    text-align:center;
+    color: var(--sky);
+    font-size: 14px;
+    margin-bottom: 22px;
+  }
+  .card{
+    background: var(--spruce);
+    border: 2px solid rgba(233,228,208,.14);
+    border-radius: 10px;
+    padding: 16px 16px 14px;
+    margin-bottom: 14px;
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    user-select:none;
+  }
+  .card:hover{ border-color: rgba(232,177,78,.5); }
+  .card:focus-visible{
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .card.picked{
+    border-color: var(--gold);
+    background: #2A5A48;
+  }
+  .stamp{
+    flex: 0 0 auto;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px dashed rgba(233,228,208,.35);
+    display:flex; align-items:center; justify-content:center;
+    transition: border-color .2s, background .2s;
+  }
+  .card.picked .stamp{
+    border-style: solid;
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+  .stamp svg{ width: 24px; height: 24px; opacity: 0; transition: opacity .2s; }
+  .card.picked .stamp svg{ opacity: 1; }
+  .card-body{ flex:1; min-width:0; }
+  .card-name{
+    font-family:'Alfa Slab One', serif;
+    font-weight: 400;
+    font-size: 19px;
+    text-transform: capitalize;
+    color: var(--meadow);
+    letter-spacing: .01em;
+  }
+  .card.picked .card-name{ color: var(--gold); }
+  .card a{
+    display:inline-block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sky);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .card a:hover{ color: var(--meadow); }
+
+  /* ─── Ballot box ─── */
+  .ballot{
+    margin-top: 34px;
+    background: var(--bark);
+    border-radius: 12px;
+    padding: 24px 20px;
+    border: 2px solid rgba(232,177,78,.35);
+  }
+  .ballot h2{
+    font-family:'Alfa Slab One', serif;
+    font-weight: 400;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    text-align:center;
+  }
+  label{
+    display:block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+  }
+  input[type="text"]{
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--meadow);
+    background: var(--pine);
+    border: 2px solid rgba(233,228,208,.2);
+    border-radius: 8px;
+  }
+  input[type="text"]:focus{
+    outline:none;
+    border-color: var(--gold);
+  }
+  button{
+    width: 100%;
+    margin-top: 16px;
+    padding: 15px;
+    font-family:'Alfa Slab One', serif;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--bark);
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: filter .15s, transform .1s;
+  }
+  button:hover{ filter: brightness(1.08); }
+  button:active{ transform: translateY(1px); }
+  button:disabled{
+    opacity: .45;
+    cursor: not-allowed;
+    filter:none;
+  }
+  button:focus-visible{
+    outline: 3px solid var(--meadow);
+    outline-offset: 2px;
+  }
+  .status{
+    margin-top: 12px;
+    text-align:center;
+    font-size: 14px;
+    min-height: 20px;
+  }
+  .status.err{ color: #F0A18E; }
+
+  /* ─── Success state ─── */
+  .done{
+    display:none;
+    text-align:center;
+    padding: 70px 20px;
+  }
+  .done.show{ display:block; }
+  .done h2{
+    font-family:'Alfa Slab One', serif;
+    font-weight: 400;
+    font-size: clamp(26px, 6vw, 40px);
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 18px 0 10px;
+  }
+  .done p{ color: var(--sky); font-size: 16px; }
+  .done .tree{ width: 64px; height: 64px; }
+
+  footer{
+    text-align:center;
+    padding: 20px;
+    font-size: 12px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: rgba(233,228,208,.4);
+    border-top: 1px solid rgba(233,228,208,.1);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Official Cabin Ballot</p>
+  <h1>Dylan's Beautiful Bachelor&nbsp;Party Trip&nbsp;Extravaganza</h1>
+  <p class="dates"><strong>Aug 20 – 23, 2026</strong> · 9 campers · one perfect cabin</p>
+</header>
+
+<div class="tray" id="tray">
+  <span class="tray-label" id="trayLabel">3 votes left</span>
+  <div class="tokens" aria-hidden="true">
+    <svg class="token" id="tk0" viewBox="0 0 24 24" fill="none"><path d="M12 2 L19 13 H15 L21 21 H3 L9 13 H5 Z" fill="#E8B14E"/><rect x="11" y="19" width="2" height="3" fill="#E8B14E"/></svg>
+    <svg class="token" id="tk1" viewBox="0 0 24 24" fill="none"><path d="M12 2 L19 13 H15 L21 21 H3 L9 13 H5 Z" fill="#E8B14E"/><rect x="11" y="19" width="2" height="3" fill="#E8B14E"/></svg>
+    <svg class="token" id="tk2" viewBox="0 0 24 24" fill="none"><path d="M12 2 L19 13 H15 L21 21 H3 L9 13 H5 Z" fill="#E8B14E"/><rect x="11" y="19" width="2" height="3" fill="#E8B14E"/></svg>
+  </div>
+</div>
+
+<main id="main">
+  <p class="hint">Tap to stamp your picks (up to 3). Tap again to un-pick. Links open the listing.</p>
+
+  <div id="cards"></div>
+
+  <div class="ballot">
+    <h2>Drop it in the box</h2>
+    <label for="voterName">Your name</label>
+    <input type="text" id="voterName" placeholder="e.g. Paul" autocomplete="name" maxlength="40">
+    <button id="submitBtn" disabled>Submit my 3 picks</button>
+    <p class="status" id="status"></p>
+  </div>
+</main>
+
+<section class="done" id="done">
+  <svg class="tree" viewBox="0 0 24 24" fill="none"><path d="M12 2 L19 13 H15 L21 21 H3 L9 13 H5 Z" fill="#E8B14E"/><rect x="11" y="19" width="2" height="3" fill="#E8B14E"/></svg>
+  <h2>Ballot Cast!</h2>
+  <p>Thanks — your picks are in.<br>See you in the mountains. 🏔️</p>
+</section>
+
+<footer>Est. 2026 · Dept. of Group Trips</footer>
+
+<script>
+  const CABINS = [
+    { name: "The cabin",          url: "https://www.airbnb.com/rooms/796440212030201837?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "The view",           url: "https://www.airbnb.com/rooms/48973014?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Air hockey",         url: "https://www.airbnb.com/rooms/49365483?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Paul's house",       url: "https://www.airbnb.com/rooms/726719448801613056?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Open layout",        url: "https://www.airbnb.com/rooms/619566239100815471?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Catskills pingpong", url: "https://www.airbnb.com/rooms/629088049472199354?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "NY A-Frame",         url: "https://www.airbnb.com/rooms/49880955?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+  ];
+
+  const picks = new Set();
+  const cardsEl = document.getElementById('cards');
+  const trayLabel = document.getElementById('trayLabel');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('status');
+  const nameEl = document.getElementById('voterName');
+
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 13 L10 18 L19 6" stroke="#0F241C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  CABINS.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('role', 'checkbox');
+    card.setAttribute('aria-checked', 'false');
+    card.setAttribute('tabindex', '0');
+    card.innerHTML = `
+      <div class="stamp">${CHECK}</div>
+      <div class="card-body">
+        <div class="card-name">${c.name}</div>
+        <a href="${c.url}" target="_blank" rel="noopener">View listing ↗</a>
+      </div>`;
+    card.querySelector('a').addEventListener('click', e => e.stopPropagation());
+    const toggle = () => {
+      if (picks.has(i)) {
+        picks.delete(i);
+        card.classList.remove('picked');
+        card.setAttribute('aria-checked', 'false');
+      } else {
+        if (picks.size >= MAX_PICKS) {
+          statusEl.textContent = "That's your 3 — un-pick one to swap.";
+          statusEl.className = 'status err';
+          setTimeout(() => { statusEl.textContent = ''; }, 2200);
+          return;
+        }
+        picks.add(i);
+        card.classList.add('picked');
+        card.setAttribute('aria-checked', 'true');
+      }
+      refresh();
+    };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+    });
+    cardsEl.appendChild(card);
+  });
+
+  function refresh(){
+    const left = MAX_PICKS - picks.size;
+    trayLabel.textContent = left === 0 ? 'All votes spent!' : `${left} vote${left === 1 ? '' : 's'} left`;
+    for (let t = 0; t < MAX_PICKS; t++){
+      document.getElementById('tk' + t).classList.toggle('spent', t >= left);
+    }
+    submitBtn.disabled = picks.size === 0;
+    submitBtn.textContent = picks.size === 0
+      ? 'Pick at least 1 cabin'
+      : `Submit my ${picks.size} pick${picks.size === 1 ? '' : 's'}`;
+  }
+  refresh();
+
+  submitBtn.addEventListener('click', async () => {
+    const name = nameEl.value.trim();
+    if (!name){
+      statusEl.textContent = 'Add your name so we know who voted!';
+      statusEl.className = 'status err';
+      nameEl.focus();
+      return;
+    }
+    const chosen = [...picks].map(i => CABINS[i].name);
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Casting ballot…';
+    statusEl.textContent = '';
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, picks: chosen.join(', ') })
+      });
+      if (!res.ok) throw new Error('Bad response');
+      document.getElementById('main').style.display = 'none';
+      document.getElementById('tray').style.display = 'none';
+      document.getElementById('done').classList.add('show');
+      window.scrollTo({ top: 0 });
+    } catch (err) {
+      statusEl.textContent = "Couldn't submit — check the connection and try again.";
+      statusEl.className = 'status err';
+      submitBtn.disabled = false;
+      refresh();
+    }
+  });
+</script>
+</body>
+</html>
