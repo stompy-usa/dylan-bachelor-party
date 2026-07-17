@@ -171,6 +171,26 @@
   }
   .card a:hover{ color: var(--meadow); }
 
+  /* ─── Region headings ─── */
+  .region{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    margin: 26px 0 12px;
+    font-size: 12px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .region::before, .region::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: rgba(232,177,78,.35);
+  }
+  #cards .region:first-child{ margin-top: 0; }
+
   /* ─── Rizzler endorsement ─── */
   .endorse{
     margin: 34px auto 0;
@@ -343,13 +363,13 @@
 
 <script>
   const CABINS = [
-    { name: "The cabin",          url: "https://www.airbnb.com/rooms/796440212030201837?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "The view",           url: "https://www.airbnb.com/rooms/48973014?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "Air hockey",         url: "https://www.airbnb.com/rooms/49365483?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "Paul's house",       url: "https://www.airbnb.com/rooms/726719448801613056?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "Open layout",        url: "https://www.airbnb.com/rooms/619566239100815471?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "Catskills pingpong", url: "https://www.airbnb.com/rooms/629088049472199354?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
-    { name: "NY A-Frame",         url: "https://www.airbnb.com/rooms/49880955?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "The cabin",          region: "Shenandoah, VA", url: "https://www.airbnb.com/rooms/796440212030201837?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "The view",           region: "Shenandoah, VA", url: "https://www.airbnb.com/rooms/48973014?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Air hockey",         region: "Shenandoah, VA", url: "https://www.airbnb.com/rooms/49365483?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Paul's house",       region: "Shenandoah, VA", url: "https://www.airbnb.com/rooms/726719448801613056?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Open layout",        region: "Shenandoah, VA", url: "https://www.airbnb.com/rooms/619566239100815471?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "Catskills pingpong", region: "Catskills, NY",  url: "https://www.airbnb.com/rooms/629088049472199354?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
+    { name: "NY A-Frame",         region: "Catskills, NY",  url: "https://www.airbnb.com/rooms/49880955?adults=9&check_in=2026-08-20&check_out=2026-08-23" },
   ];
 
   const picks = new Set();
@@ -361,7 +381,15 @@
 
   const CHECK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 13 L10 18 L19 6" stroke="#0F241C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+  let lastRegion = null;
   CABINS.forEach((c, i) => {
+    if (c.region !== lastRegion){
+      const h = document.createElement('div');
+      h.className = 'region';
+      h.textContent = c.region;
+      cardsEl.appendChild(h);
+      lastRegion = c.region;
+    }
     const card = document.createElement('div');
     card.className = 'card';
     card.setAttribute('role', 'checkbox');
